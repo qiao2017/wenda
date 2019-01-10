@@ -1,4 +1,7 @@
 package com.wenda.entity;
+
+import java.util.Date;
+
 /**
  * @author 乔莹
  * @version TODO
@@ -11,6 +14,13 @@ public class User {
     private String password;
     private String salt;
     private String headUrl;
+    private Date createDate;
+    public Date getCreateDate() {
+        return createDate;
+    }
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
     public int getId() {
         return id;
     }

@@ -16,12 +16,12 @@ import com.wenda.entity.User;
  */
 @Mapper
 public interface UserDAO {
-    String TABLE_NAME = "user";
-    String INSET_FIELDS = " name, password, salt, head_url ";
-    String SELECT_FIELDS = " id, name, password, salt, head_url";
+    String TABLE_NAME = " user ";
+    String INSET_FIELDS = " name, password, salt, head_url, create_date ";
+    String SELECT_FIELDS = " id, name, password, salt, head_url, create_date";
 
     @Insert({"insert into ", TABLE_NAME, "(", INSET_FIELDS,
-            ") values (#{name}, #{password}, #{salt}, #{headUrl})"})
+            ") values (#{name}, #{password}, #{salt}, #{headUrl}, #{createDate})"})
     int addUser(User user);
 
     @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, " where id=#{id}"})

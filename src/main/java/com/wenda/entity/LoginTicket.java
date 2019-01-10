@@ -1,0 +1,47 @@
+package com.wenda.entity;
+
+import java.util.Date;
+
+/**
+ * @author 乔莹
+ * @version TODO
+ * @time  2019年1月9日 下午10:44:43
+ * @copyright qiao
+ */
+public class LoginTicket {
+    private int id;
+    private int userId;
+    private Date expired;
+    private int status;// 0有效，1无效
+    private String ticket;
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public int getUserId() {
+        return userId;
+    }
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+    public Date getExpired() {
+        return expired;
+    }
+    public void setExpired(Date expired) {
+        this.expired = expired;
+    }
+    public int getStatus() {
+        return status;
+    }
+    public void setStatus(int status) {
+        this.status = status;
+    }
+    public String getTicket() {
+        return ticket;
+    }
+    public void setTicket(String ticket) {
+        this.ticket = ticket;
+    }
+}
