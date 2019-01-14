@@ -29,9 +29,9 @@ public class UserService {
         return userDAO.selectById(id);
     }
     
-    public Map<String, Object> register(String userName, String password) {
+    public Map<String, Object> register(String username, String password) {
         Map<String, Object> map = new HashMap<String, Object>();
-        if (StringUtils.isEmptyOrWhitespaceOnly(userName)) {
+        if (StringUtils.isEmptyOrWhitespaceOnly(username)) {
             map.put("msg", "用户名不能为空");
             return map;
         }
@@ -41,16 +41,15 @@ public class UserService {
             return map;
         }
 
-        User user = userDAO.selectByName(userName);
+        User user = userDAO.selectByName(username);
 
         if (user != null) {
             map.put("msg", "用户名已经被注册");
             return map;
         }
         
-        Map<String, Object> res = new HashMap<>();
         user = new User();
-        user.setName(userName);
+        user.setName(username);
         String salt = UUID.randomUUID().toString()
                         .replaceAll("-", "").substring(0, 7);
         user.setSalt(salt);
@@ -60,6 +59,33 @@ public class UserService {
         user.setPassword(Util.md5(password + salt));
         user.setCreateDate(new Date());
         userDAO.addUser(user);
-        return res;
+        return map;
+    }
+    
+    public Map<String, Object> login(String username, String password) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (StringUtils.isEmptyOrWhitespaceOnly(username)) {
+            map.put("msg", "用户名不能为空");
+            return map;
+        }
+
+        if (StringUtils.isEmptyOrWhitespaceOnly(password)) {
+            map.put("msg", "密码不能为空");
+            return map;
+        }
+
+        User user = userDAO.selectByName(username);
+
+        if (user == null) {
+            map.put("msg", "用户名不存在");
+            return map;
+        }
+        
+        if(Util.md5(password + user.getSalt()).equals(user.getPassword())) {
+            return map;
+        }else {
+            map.put("msg", "密码错误");
+            return map;
+        }
     }
 }
