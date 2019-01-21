@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mysql.cj.util.StringUtils;
+import com.wenda.dao.LoginTicketDAO;
 import com.wenda.dao.UserDAO;
+import com.wenda.entity.LoginTicket;
 import com.wenda.entity.User;
 import com.wenda.util.Util;
 
@@ -24,6 +26,8 @@ import com.wenda.util.Util;
 public class UserService {
     @Autowired
     UserDAO userDAO;
+    @Autowired
+    LoginTicketDAO loginTicketDAO;
     
     public User getUser(int id) {
         return userDAO.selectById(id);
@@ -59,6 +63,8 @@ public class UserService {
         user.setPassword(Util.md5(password + salt));
         user.setCreateDate(new Date());
         userDAO.addUser(user);
+        String ticket = addLoginTicket(user.getId());
+        map.put("ticket", ticket);
         return map;
     }
     
@@ -81,11 +87,30 @@ public class UserService {
             return map;
         }
         
-        if(Util.md5(password + user.getSalt()).equals(user.getPassword())) {
-            return map;
-        }else {
+        if(!Util.md5(password + user.getSalt()).equals(user.getPassword())) {
             map.put("msg", "密码错误");
             return map;
+        }else {
+            String ticket = addLoginTicket(user.getId());
+            map.put("ticket", ticket);
+            return map;
         }
+    }
+    
+    public void logout(String ticket) {
+        loginTicketDAO.updateStatus(ticket);
+    }
+    
+    public String addLoginTicket(int userId) {
+        LoginTicket loginTicket = new LoginTicket();
+        loginTicket.setUserId(userId);
+        Date date = new Date();
+        date.setTime(date.getTime() + 1000 * 3600 * 24 * 7);
+        loginTicket.setExpired(date);
+        String ticket = UUID.randomUUID().toString().replaceAll("-", "");
+        loginTicket.setTicket(ticket);
+        loginTicket.setStatus(LoginTicket.VALID);
+        loginTicketDAO.adTicket(loginTicket);
+        return ticket;
     }
 }

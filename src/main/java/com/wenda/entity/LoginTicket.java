@@ -9,10 +9,12 @@ import java.util.Date;
  * @copyright qiao
  */
 public class LoginTicket {
+    public static final String VALID = "0";
+    public static final String IN_VALID = "1";
     private int id;
     private int userId;
     private Date expired;
-    private int status;// 0有效，1无效
+    private String status;// 0有效，1无效
     private String ticket;
     public int getId() {
         return id;
@@ -32,10 +34,10 @@ public class LoginTicket {
     public void setExpired(Date expired) {
         this.expired = expired;
     }
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
     public String getTicket() {

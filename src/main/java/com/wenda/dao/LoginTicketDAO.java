@@ -2,6 +2,9 @@ package com.wenda.dao;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.wenda.entity.LoginTicket;
 
@@ -21,5 +24,10 @@ public interface LoginTicketDAO {
     ") values (#{userId}, #{expired}, #{status}, #{ticket})"})
     int adTicket(LoginTicket ticket);
     
+    @Select({"select ", SELECT_FIELDS, " from ", 
+        TABLE_NAME, " where ticket = #{ticket}"})
+    LoginTicket selectByTicket(@Param("ticket") String ticket);
     
+    @Update({"update ", TABLE_NAME, " set status = '1' where ticket = #{ticket}"})
+    void updateStatus(@Param("ticket")String ticket);
 }
