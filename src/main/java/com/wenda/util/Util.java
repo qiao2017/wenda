@@ -4,6 +4,8 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import com.alibaba.fastjson.JSONObject;
+
 /**
  * @author 乔莹
  * @version TODO
@@ -11,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
  * @copyright qiao
  */
 public class Util {
+    public static final int ANONYMOUS = 0;
     public static String md5(String plainText) {
         //定义一个字节数组
         byte[] secretBytes = null;
@@ -32,4 +35,18 @@ public class Util {
         }
         return md5code;
     }
+    
+    public static String getJSONString(int code) {
+        JSONObject json = new JSONObject();
+        json.put("code", code);
+        return json.toJSONString();
+    }
+
+    public static String getJSONString(int code, String msg) {
+        JSONObject json = new JSONObject();
+        json.put("code", code);
+        json.put("msg", msg);
+        return json.toJSONString();
+    }
+
 }

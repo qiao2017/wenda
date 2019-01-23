@@ -41,7 +41,7 @@
                 </a>
                 <ul class="top-nav-dropdown" id="top-nav-profile-dropdown" aria-labelledby=":0">
                     <li>
-                        <a href="@{'/user/'+${user.getId()}}" tabindex="-1" id=":1">
+                        <a th:href="@{'/user/'+${user.getId()}}" tabindex="-1" id=":1">
                             <i class="zg-icon zg-icon-dd-home"></i>我的主页
                         </a>
                     </li>
@@ -61,7 +61,9 @@
             </div>
 
         </div>
-        <button class="zu-top-add-question" id="zu-top-add-question">提问</button>
+        <div th:if="${user}">
+            <a href = "/question.html"><button class="zu-top-add-question" id="zu-top-add-question">提问</button></a>
+        </div>
         <div role="search" id="zh-top-search" class="zu-top-search">
             <form method="GET" action="https://nowcoder.com/search" id="zh-top-search-form" class="zu-top-search-form">
                 <input type="hidden" name="type" value="content">

@@ -32,10 +32,8 @@ public class LoginController {
 //    @Autowired
     
     @RequestMapping(path = { "/login" }, method = { RequestMethod.POST, RequestMethod.GET })
-    public String register(Model model, 
-            @RequestParam("username") String username,
-            @RequestParam("password") String password, 
-            HttpServletResponse response,
+    public String register(Model model, @RequestParam("username") String username,
+            @RequestParam("password") String password, HttpServletResponse response,
             @RequestParam(value = "rememberme", required = false, defaultValue = "false") boolean rememberme,
             @RequestParam(value = "next", required = false) String next) {
         try {

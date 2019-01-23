@@ -13,7 +13,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>wenda</name>
-	<description>秒杀</description>
+	<description>问答</description>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -54,6 +54,25 @@
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
+		        <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+		<dependency>
+		    <groupId>com.alibaba</groupId>
+		    <artifactId>fastjson</artifactId>
+		    <version>1.2.55</version>
+		</dependency>
+		        
+       <dependency>
+           <groupId>net.sourceforge.nekohtml</groupId>
+           <artifactId>nekohtml</artifactId>
+           <version>1.9.22</version>
+       </dependency>
+       <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+		    <version>3.7</version>
+		</dependency>
+		       
 	</dependencies>
 
 	<build>
