@@ -32,7 +32,7 @@ public class QuestionService {
     
     //添加问题，返回questionId
     public void addQuestion(String title, String content) {
-        //敏感词过滤 TODO
+        //敏感词过滤 
         
         Question question = new Question();
 //        question.setContent(HtmlUtils.htmlEscape(content));

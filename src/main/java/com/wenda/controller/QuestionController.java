@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.wenda.entity.Comment;
 import com.wenda.entity.EntityType;
+import com.wenda.entity.HostHolder;
 import com.wenda.entity.Question;
+import com.wenda.entity.User;
 import com.wenda.entity.ViewObject;
 import com.wenda.service.CommentService;
 import com.wenda.service.QuestionService;
@@ -36,13 +38,16 @@ public class QuestionController {
     CommentService commentService;
     @Autowired
     UserService userService;
+    @Autowired
+    HostHolder hostHolder;
     
     @RequestMapping(value = "/question/add", method = {RequestMethod.POST})
     public String addQuestion(@RequestParam("title") String title,
             @RequestParam("content") String content) {
         try {
             questionService.addQuestion(title, content);
-            return "redirect:/user/1";
+            User currentUser = hostHolder.getUser();
+            return "redirect:/user/" + currentUser.getId();
         }catch (Exception e) {
             logger.error("增加题目失败！" + e.getMessage());
         }

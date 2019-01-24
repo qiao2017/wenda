@@ -113,4 +113,8 @@ public class UserService {
         loginTicketDAO.adTicket(loginTicket);
         return ticket;
     }
+
+    public User selectByName(String toName) {
+        return userDAO.selectByName(toName);
+    }
 }
