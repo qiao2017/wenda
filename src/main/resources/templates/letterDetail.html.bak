@@ -1,0 +1,33 @@
+<div th:replace="header::html" ></div>
+<link rel="stylesheet" media="all" href="../styles/letter.css">
+<div id="main">
+    <div class="zg-wrap zu-main clearfix ">
+        <ul class="letter-chatlist">
+        
+            <div th:each="message : ${messages}">
+	            <li id="msg-item-4009580">
+	                <a class="list-head">
+	                    <img alt="头像" th:src="${message.get('headUrl')}">
+	                </a>
+	                <div class="tooltip fade right in">
+	                    <div class="tooltip-arrow"></div>
+	                    <div class="tooltip-inner letter-chat clearfix">
+	                        <div class="letter-info">
+	                            <p class="letter-time">
+	                            [[${#dates.format(message.get('message').getCreateDate(), 'yyyy-MM-dd HH:mm:ss')}]]
+	                            </p>
+	                        </div>
+	                        <p class="chat-content">
+	                            [[${message.get('message')['content']}]]
+	                        </p>
+	                    </div>
+	                </div>
+	            </li>
+            </div>
+        </ul>
+
+    </div>
+</div>
+
+<script type="text/javascript" src="/scripts/main/site/detail.js"></script>
+</body></html>

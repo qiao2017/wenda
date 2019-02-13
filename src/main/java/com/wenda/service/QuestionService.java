@@ -31,7 +31,7 @@ public class QuestionService {
     }
     
     //添加问题，返回questionId
-    public void addQuestion(String title, String content) {
+    public int addQuestion(String title, String content) {
         //敏感词过滤 
         
         Question question = new Question();
@@ -46,7 +46,7 @@ public class QuestionService {
         }
         question.setUserId(userId);
         question.setCreatedDate(new Date());
-        questionDAO.addQuestion(question);
+        return questionDAO.addQuestion(question);
     }
     
     public Question getById(int qid) {

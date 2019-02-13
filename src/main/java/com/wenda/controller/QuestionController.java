@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wenda.entity.Comment;
 import com.wenda.entity.EntityType;
@@ -20,8 +21,10 @@ import com.wenda.entity.Question;
 import com.wenda.entity.User;
 import com.wenda.entity.ViewObject;
 import com.wenda.service.CommentService;
+import com.wenda.service.LikeService;
 import com.wenda.service.QuestionService;
 import com.wenda.service.UserService;
+import com.wenda.util.Util;
 
 /**
  * @author 乔莹
@@ -40,18 +43,20 @@ public class QuestionController {
     UserService userService;
     @Autowired
     HostHolder hostHolder;
+    @Autowired
+    LikeService likeService;
     
     @RequestMapping(value = "/question/add", method = {RequestMethod.POST})
+    @ResponseBody
     public String addQuestion(@RequestParam("title") String title,
-            @RequestParam("content") String content) {
+            @RequestParam(value = "content", required = false) String content) {
         try {
-            questionService.addQuestion(title, content);
-            User currentUser = hostHolder.getUser();
-            return "redirect:/user/" + currentUser.getId();
+            int qid = questionService.addQuestion(title, content);
+            return Util.getJSONString(0, "/question/" + qid);
         }catch (Exception e) {
             logger.error("增加题目失败！" + e.getMessage());
         }
-        return "redirect:/";
+        return Util.getJSONString(1);
     }
 
     @RequestMapping(value = "/question/{qid}", method = {RequestMethod.GET})
@@ -63,6 +68,8 @@ public class QuestionController {
         for (Comment comment : commentList) {
             ViewObject vo = new ViewObject();
             vo.set("comment", comment);
+            vo.set("likeCount", likeService.getLikedCount(EntityType.ENTITY_COMMENT, comment.getId()));
+            vo.set("liked", likeService.getLikedStatus(hostHolder.getUser().getId(), EntityType.ENTITY_COMMENT, comment.getId()));
             vo.set("user", userService.getUser(comment.getUserId()));
             vos.add(vo);
         }

@@ -4,6 +4,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script async="" src="../scripts/ga.js"></script>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js">
+    </script>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-ZA-Response-Id" content="46acde5c53db46f2806ccad726de9826">
@@ -17,7 +19,90 @@
     <style>
     .zm-item-answer-author-info a.collapse {margin-top: 0}
     </style>
+    <script>
+	    function send_message(){
+            var title = document.getElementById("zh-question-suggest-title-content-message").value;
+            var content = document.getElementById("mock:k-message").innerText;
+            /*判断title是否为空*/
+            if(typeof title == "undefined" || title == null || title == ""){
+                document.getElementById("zh-question-form-tag-err-message").style.display="";//显示
+                document.getElementById("zh-question-form-tag-err-message").innerHTML="用户名不能为空";//显示
+            }else{
+                /* 提问  */
+                $.ajax({
+                    url: "/msg/addMessage",
+                    type: "POST",
+                    data:{
+                        toName:$("#zh-question-suggest-title-content-message").val(),
+                        content: content
+                    },
+                    success:function(data){
+                        if(data.code == 0){
+                            alert('发送成功');
+                            document.getElementById("sendMessageForm").style.display="none";//隐藏
+                        }else if (data.code == 1){
+                            document.getElementById("zh-question-form-tag-err-message").style.display="";//显示
+                            document.getElementById("zh-question-form-tag-err-message").innerHTML="用户不存在";//显示
+                        	
+                        }else{
+                            document.getElementById("sendMessageForm").style.display="none";//隐藏
+                            window.location.href="/";
+                        }
+                    },
+                    error:function(){
+                        document.getElementById("sendMessageForm").style.display="none";//隐藏
+                        window.location.href="/";
+                        
+                    }
+                });
+            }
+	    	
+	    }
+	    function cancle_question_form(){
+	    	document.getElementById("addQuestionForm").style.display="none";//隐藏
+	    	return false;
+	    }
+	    function showa_add_question_form(){
+            document.getElementById("addQuestionForm").style.display="";//显示
+        }
+	    function show_send_message_form(){
+            document.getElementById("sendMessageForm").style.display="";//显示
+        }
+	    function cancle_send_message_form(){
+            document.getElementById("sendMessageForm").style.display="none";
+        }
+        
+	    function add_question(){
+            var title = document.getElementById("zh-question-suggest-title-content").value;
+            var content = document.getElementById("mock:k").innerText;
+            /*判断title是否为空*/
+            if(typeof title == "undefined" || title == null || title == ""){
+                document.getElementById("zh-question-form-tag-err").style.display="";//显示
+            }else{
+                document.getElementById("addQuestionForm").style.display="none";//隐藏
+                /* 提问  */
+                $.ajax({
+                    url: "/question/add",
+                    type: "POST",
+                    data:{
+                        title:$("#zh-question-suggest-title-content").val(),
+                        content: content
+                    },
+                    success:function(data){
+                        if(data.code == 0){
+                            window.location.href=data.msg;
+                        }else{
+                        	window.location.href="/";
+                        }
+                    },
+                    error:function(){
+                        
+                    }
+                });
+            }
 
+	    }
+    </script>
 </head>
 <body class="zhi ">
 <div role="navigation" class="zu-top">
@@ -62,7 +147,8 @@
 
         </div>
         <div th:if="${user}">
-            <a href = "/question.html"><button class="zu-top-add-question" id="zu-top-add-question">提问</button></a>
+            <button class="zu-top-add-question" id="zu-top-add-question" onClick="showa_add_question_form()">提问</button>
+            <button class="zu-top-add-question" id="send-message" onClick="show_send_message_form()">聊天</button>
         </div>
         <div role="search" id="zh-top-search" class="zu-top-search">
             <form method="GET" action="https://nowcoder.com/search" id="zh-top-search-form" class="zu-top-search-form">
@@ -141,4 +227,94 @@
             </div>
         </div>
     </div>
+            <!-- 提问表格 -->
+            <div class="modal-wrapper" aria-hidden="true" name="addQuestionForm" style ="display: none" id="addQuestionForm">
+            <div class="modal-dialog absolute-position" style="width: 550px;left:50%; top:10%">
+                <div class="modal-dialog-title">
+                    <span class="modal-dialog-title-text" id=":i" role="heading">提问</span>
+                    <span class="modal-dialog-title-close" role="button" tabindex="0" aria-label="Close" onClick="cancle_question_form()"></span>
+                </div>
+                <div class="modal-dialog-content">
+                    <div class="zh-add-question-form">
+                        <form class="js-add-question-form" style="display: block;">
+                            <div class="zg-section-big clearfix">
+
+                                <div class="add-question-section-title">写下你的问题：</div>
+                                <div class="zg-form-text-input add-question-title-form" style="position: relative;">
+                                    <textarea rows="3" class="zg-editor-input zu-seamless-input-origin-element" title="在这里输入问题" id="zh-question-suggest-title-content" aria-label="写下你的问题" placeholder="写下你的问题：" role="combobox" aria-autocomplete="list" autocomplete="off" style="height: 22px;"></textarea>
+                                </div>
+                            </div>
+                            <div class="zg-section-big">
+                                <div class="add-question-section-title">问题说明（可选）：</div>
+                                <div id="zh-question-suggest-detail-container" class="zm-editable-status-editing">
+                                    <div class="zm-editable-editor-wrap no-toolbar" style="">
+                                        <div class="zm-editable-editor-outer">
+                                            <div class="zm-editable-editor-field-wrap">
+                                                <div id="mock:k" class="zm-editable-editor-field-element editable" g_editable="true" role="textbox" contenteditable="true" style="font-style: italic;">
+                                                    <p>
+                                                        <div id="question_content"></div></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="zm-command">
+                                <span id="zh-question-form-tag-err" style="display: none;">标题不能为空</span>
+                                <a class="zm-command-cancel" onclick="cancle_question_form()">取消</a>
+                                <!-- <a href="javascript:;" name="cancel" class="zm-command-cancel" onclick="cancle_question_form()">取消</a> -->
+                                <a class="zg-r5px zu-question-form-add zg-btn-blue" onclick="add_question()">发布</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+        
+                    <!-- 私聊表格 -->
+            <div class="modal-wrapper" aria-hidden="true" style ="display: none" id="sendMessageForm">
+            <div class="modal-dialog absolute-position" style="width: 550px;left:50%; top:10%">
+                <div class="modal-dialog-title">
+                    <span class="modal-dialog-title-text" id=":i" role="heading">发给</span>
+                    <span class="modal-dialog-title-close" role="button" tabindex="0" aria-label="Close" onClick="cancle_send_message_form()"></span>
+                </div>
+                <div class="modal-dialog-content">
+                    <div class="zh-add-question-form">
+                        <form class="js-add-question-form" style="display: block;">
+                            <div class="zg-section-big clearfix">
+
+                                <div class="add-question-section-title">写下用户名</div>
+                                <div class="zg-form-text-input add-question-title-form" style="position: relative;">
+                                    <textarea rows="3" class="zg-editor-input zu-seamless-input-origin-element" title="在这里输入用户名" id="zh-question-suggest-title-content-message" aria-label="写下私信的用户名" placeholder="写下用户名" role="combobox" aria-autocomplete="list" autocomplete="off" style="height: 22px;"></textarea>
+                                </div>
+                            </div>
+                            <div class="zg-section-big">
+                                <div class="add-question-section-title">私信内容：</div>
+                                <div id="zh-question-suggest-detail-container" class="zm-editable-status-editing">
+                                    <div class="zm-editable-editor-wrap no-toolbar" style="">
+                                        <div class="zm-editable-editor-outer">
+                                            <div class="zm-editable-editor-field-wrap">
+                                                <div id="mock:k-message" class="zm-editable-editor-field-element editable" g_editable="true" role="textbox" contenteditable="true" style="font-style: italic;">
+                                                    <p>
+                                                        <div id="question_content"></div></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="zm-command">
+                                <span id="zh-question-form-tag-err-message" style="display: none;"></span>
+                                <a class="zm-command-cancel" onclick="cancle_send_message_form()">取消</a>
+                                <a class="zg-r5px zu-question-form-add zg-btn-blue" onclick="send_message()">发送</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>

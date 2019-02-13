@@ -3,7 +3,9 @@ package com.wenda.util;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -14,6 +16,8 @@ import com.alibaba.fastjson.JSONObject;
  */
 public class Util {
     public static final int ANONYMOUS = 0;
+    public static final int SYSTEM_USERID = 1;
+    
     public static String md5(String plainText) {
         //定义一个字节数组
         byte[] secretBytes = null;
@@ -48,5 +52,13 @@ public class Util {
         json.put("msg", msg);
         return json.toJSONString();
     }
-
+    
+    public static String getJSONString(int code, Map<String, Object> data) {
+        JSONObject json = new JSONObject();
+        json.put("code", code); 
+        for (Map.Entry<String, Object> entry : data.entrySet()) {
+            json.put(entry.getKey(), JSON.toJSONString(entry.getValue()));
+        }
+        return json.toJSONString();
+    }
 }

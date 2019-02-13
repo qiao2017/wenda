@@ -49,7 +49,7 @@ public class MessageController {
                 return Util.getJSONString(999, "未登录");
             }
 
-            User user = userService.selectByName(toName);
+            User user = userService.selectByName(toName.trim());
             if (user == null) {
                 return Util.getJSONString(1, "用户不存在");
             }
@@ -58,13 +58,13 @@ public class MessageController {
             message.setCreateDate(new Date());
             message.setFromId(hostHolder.getUser().getId());
             message.setToId(user.getId());
-            message.setContent(content);
+            message.setContent(content.trim());
             messageService.addMessage(message);
             return Util.getJSONString(0);
 
         } catch (Exception e) {
             logger.error("发送消息失败" + e.getMessage());
-            return Util.getJSONString(1, "发信失败");
+            return Util.getJSONString(2, "发信失败");
         }
     }
     

@@ -54,4 +54,8 @@ public class CommentService {
     public boolean deleteComment(int id) {
         return commentDAO.updateStatus(id, Comment.INVALID) > 0;
     }
+
+    public Comment getCommentById(Integer commentId) {
+        return commentDAO.getCommentById(commentId);
+    }
 }
