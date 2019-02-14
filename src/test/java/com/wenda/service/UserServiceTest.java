@@ -1,6 +1,6 @@
 package com.wenda.service;
 
-import java.util.List;
+import java.util.Random;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,13 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.wenda.dao.UserDAO;
-import com.wenda.entity.Question;
+import com.wenda.dao.CommentDAO;
+import com.wenda.entity.Comment;
+import com.wenda.entity.EntityType;
 
 /**
  * @author 乔莹
  * @version TODO
- * @time  2019年1月10日 下午9:22:16
+ * @time  2019年1月23日 下午4:30:19
  * @copyright qiao
  */
 @RunWith(SpringRunner.class)
@@ -22,11 +23,15 @@ import com.wenda.entity.Question;
 public class UserServiceTest {
     @Autowired
     UserService userService;
+    @Autowired
+    FollowService followService;
     @Test
     public void test() {
-        for(int i = 0; i < 10; i++) {
-            userService.register(String.valueOf(i + 1), String.valueOf(i + 1));
+        Random rand = new Random();
+        for(int i = 12; i < 30; i++) {
+            userService.register(String.valueOf(i), String.valueOf(i));
+            followService.follow(i, EntityType.ENTITY_USER, i - (rand.nextInt(5) + 1));
+            followService.follow(i, EntityType.ENTITY_USER, i - (rand.nextInt(5) + 5));
         }
-        
     }
 }

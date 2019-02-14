@@ -5,11 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.wenda.service.MailService;
 
 /**
  * @author 乔莹
@@ -19,9 +21,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class TestController {
+    @Autowired
+    MailService mailService;
+    
     @RequestMapping(path= {"/test/", "/test/index", "/test/home"})
     @ResponseBody
     public String index() {
+        Map<String, Object> valueMap = new HashMap<>();
+        valueMap.put("to", new String[]{"2604678699@qq.com", "qiaoying_1@qq.com"});
+        valueMap.put("title", "邮件标题");
+        valueMap.put("content", "邮件内容");
+        mailService.sendMail(valueMap, "mails/mail");
         return "Hello";
     }
     

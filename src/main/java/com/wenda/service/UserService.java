@@ -57,8 +57,8 @@ public class UserService {
         String salt = UUID.randomUUID().toString()
                         .replaceAll("-", "").substring(0, 7);
         user.setSalt(salt);
-        String headUrl = String.format("http://images.nowcoder.com/head/%dt.png", 
-                                new Random().nextInt(1000));
+        String headUrl = String.format("/images/heads/%d.png", 
+                                new Random().nextInt(200));
         user.setHeadUrl(headUrl);
         user.setPassword(Util.md5(password + salt));
         user.setCreateDate(new Date());

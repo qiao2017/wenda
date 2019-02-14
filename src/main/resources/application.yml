@@ -12,7 +12,25 @@ spring:
       prefix: /
   thymeleaf:
     mode: LEGACYHTML5
+  mail:
+    password: ldfelthjbqvniifa
+    username: 1438168658@qq.com
+    host: smtp.qq.com
+    port: 465
+    protocol: smtps
+    properties: 
+      mail:
+        smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
 mybatis:
   config-location: classpath:mybatis-config.xml
 logging:
   config: classpath:logbak.xml
+#spring.mail.host=smtp.gmail.com #以Gmail为例
+#spring.mail.port=587
+#spring.mail.username=邮箱用户名
+#spring.mail.password=邮箱密码
+#spring.mail.properties.mail.smtp.auth=true
+#spring.mail.properties.mail.smtp.starttls.enable=true
+#  
